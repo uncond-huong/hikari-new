@@ -1,5 +1,73 @@
 import { state } from '../../config.js';
 
+// OUTFIT
+const outfitDatabase = {
+    // Set 1: Default
+    name: 'Mặc định',
+    folder: 'assets/phuong/default',
+    poses: [
+        { outfitId: 'default', poseId: 1, dialog: 'Ganbatte, yeh yeh, mọi điều tốt sẽ đến với cậu', slot: 'all'},
+        { outfitId: 'default', poseId: 2, dialog: 'Tui luôn ở đây với cậu nè', slot: 'all'},
+        { outfitId: 'default', poseId: 3, dialog: 'Konichiwa! Chúc cậu 1 ngày tốt lành', slot: 'morning'},
+        { outfitId: 'default', poseId: 4, dialog: 'Cứ yên tâm, có tui ở đây rùi', slot: 'all'},
+        { outfitId: 'default', poseId: 5, dialog: 'Hôm nay mệt rùi, nghỉ ngơi chút xíu nè', slot: 'evening'},
+        { outfitId: 'default', poseId: 6, dialog: 'Trò chuyện chút hong, tui vẫn luôn lắng nghe nè =))', slot: 'all'},
+        { outfitId: 'default', poseId: 7, dialog: 'Nghỉ trưa xíu nè', slot: 'afternoon'},
+        { outfitId: 'default', poseId: 8, dialog: 'Max speed tới đây', rarity: 'SR' },
+        { outfitId: 'default', poseId: 9, dialog: 'Cần là có, đồng hành mọi nơi', slot: 'all'},
+        { outfitId: 'default', poseId: 10, dialog: 'Chúc cậu có một giấc ngủ thật yên bình', slot: 'night'},
+        { outfitId: 'default', poseId: 11, dialog: 'Tui luôn ở đây, đồng hành cùng cậu', slot: 'all'},
+        { outfitId: 'default', poseId: 12, dialog: 'Highlands tài trợ tới rùi đây!', rarity: 'SSR' },
+        { outfitId: 'default', poseId: 13, dialog: 'Ăn chút gì nha!', slot: 'all'},
+        { outfitId: 'default', poseId: 14, dialog: 'Cùng chăm sóc những điều đáng yêu nha', slot: 'all'},
+        { outfitId: 'default', poseId: 15, dialog: 'Hù nè', rarity: 'SR' },
+        { outfitId: 'default', poseId: 16, dialog: 'Cùng nhau cố gắng nhen', slot: 'evening'},
+    ]
+}
+
+
+
+
+
+
+// Lấy giờ theo máy
+function getCurrentSlot() {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 11) return 'morning';
+    if (hour >= 11 && hour < 17) return 'afternoon';
+    if (hour >= 17 && hour < 21) return 'everning';
+    return 'night'
+}
+
+function getRandomDialog() {
+    const currentSlot = getCurrentSlot();
+    const currentOutfit = getEquippedOutfit();
+    const currentOutfitPool = outfitDatabase.filter(item => item.outfitId === currentOutfit);
+    const roll = Math.random();
+
+    // 1. Tầng UR (0.03% = 0.0003)
+    if (roll < 0.0003) {
+        const urList = currentOutfitPool.filter(item => item.rarity === 'UR');
+        if (urList.length > 0) return getRandomItem(urList);
+    }
+    // 2. Tầng SSR (1% = 0.01)
+    if (roll < 0.01) {
+        const ssrList = currentOutfitPool.filter(item => item.rarity === 'SSR');
+         if (ssrList.length > 0) return getRandomItem(ssrList);
+    }
+    // 3. Tầng SR (5% = 0.05)
+    if (roll < 0.05) {
+        const srList = currentOutfitPool.filter(item => item.rarity === 'SR');
+         if (srList.length > 0) return getRandomItem(srList);
+    }
+    // 4. Tầng NORMAL (~94%)
+    const normalList = currentOutfitPool.filter(item => 
+        !item.rarity && (item.slot === currentSlot || item.slot === 'all'));
+    
+    return getRandomItem(normalList);
+}
+
+// Thanh EXP
 export function initChibi() {
   const interactBtn = document.getElementById('btn-chibi-interact');
   const bubbleEl = document.getElementById('bubble-phuong');
@@ -44,217 +112,3 @@ export function initChibi() {
   renderChibiStatus();
 }
 
-// ==========================================
-// 1. KHAI BÁO ITEMS & ĐIỀU KIỆN KEY ITEM
-// ==========================================
-export const CLOSET_ITEMS = {
-    head: {
-        DEFAULT: "./assets/phuong/head/base-head.png",
-        SHOUYUE: "./assets/phuong/head/long.png",
-        TWINTAIL: "./assets/phuong/head/short.png"
-    },
-    top: {
-        DEFAULT: "./assets/phuong/top/default.png",
-        SHOUYUE_COAT: "./assets/phuong/top/shouyue_coat.png",
-        HOODIE: "./assets/phuong/top/hoodie.png"
-    },
-    bottom: {
-        DEFAULT: "./assets/phuong/bottom/default.png",
-        JEANS: "./assets/phuong/bottom/jeans.png"
-    },
-    shoes: {
-        DEFAULT: "./assets/phuong/shoes/default.png",
-        SNEAKERS: "./assets/phuong/shoes/sneakers.png"
-    },
-    acc: {
-        DEFAULT: "./assets/phuong/acc/bear.png",
-        SNIPER: "./assets/phuong/acc/sniper.png", // Món Key Item súng
-        NONE: ""
-    },
-    head: { DEFAULT: "" },
-    leftArm: { DEFAULT: "" },
-    rightArm: { DEFAULT: "" },
-    leftLeg: { DEFAULT: "" },
-    rightLeg: { DEFAULT: "" },
-    tail: { 
-        DEFAULT: "", 
-        TAIL_LEOPARD: "./assets/phuong/tail/tail_leopard.png"
-    },
-    pets: { 
-        DEFAULT: "",
-        SNOW_LEOPARD: "./assets/phuong/pets/snow_leopard.png"
-    },
-    habitat: {
-        DEFAULT: "",
-        ICE_PLATFORM: "./assets/phuong/habitat/ice_platform.png" 
-    }
-};
-
-// Cấu hình điều kiện tiên quyết cho các món Key Item
-export const ITEM_RULES = {
-    "SNIPER": {
-        requires: ["SHOUYUE", "SHOUYUE_COAT", "JEANS", "SNEAKERS"], // Ví dụ kiểm tra các slot: hair, top, bottom, shoes
-        lockNotice: "Tiểu thư ơi! Phải mặc đủ bộ trang phục Báo Tuyết thì mới nhấc nổi cây súng này nha! ❄️"
-    },
-    "SNOW_LEOPARD": {
-        requires: ["SHOUYUE", "SHOUYUE_COAT", "JEANS", "SNEAKERS", "TAIL_LEOPARD"],
-        lockNotice: "Bé báo tuyết chỉ đi theo khi cậu mặc đúng bộ đồ Báo Tuyết thui đó nghen! 🐾"
-    }
-};
-
-// 2. ĐỒ ĐANG MẶC (Lưu dạng key của CLOSET_ITEMS)
-let currentOutfit = {
-    head: "DEFAULT",
-    top: "DEFAULT",
-    bottom: "DEFAULT",
-    shoes: "DEFAULT",
-    acc: "DEFAULT",
-    head: "DEFAULT",
-    leftArm: "DEFAULT",
-    rightArm: "DEFAULT",
-    leftLeg: "DEFAULT",
-    rightLeg: "DEFAULT",
-    tail: "DEFAULT",
-    pets: "DEFAULT",
-    habitat: "DEFAULT"
-};
-
-// 3. FULL SET CONDITION (Đủ bộ sẽ kích hoạt pose nằm ngắm bắn hoành tráng)
-const FULL_SETS = {
-    "shouyue_sniper_set": {
-        // Điều kiện: Phải gom đủ Tóc, Áo, Súng, Pet con báo và Địa hình băng giá!
-        condition: (outfit) => 
-            outfit.head === "SHOUYUE" && 
-            outfit.top === "SHOUYUE_COAT" && 
-            outfit.bottom === "JEANS" &&
-            outfit.shoes === "SNEAKERS" &&
-            outfit.acc === "SNIPER" &&
-            outfit.tail === "TAIL_LEOPARD" &&
-            outfit.pets === "SNOW_LEOPARD" &&
-            outfit.habitat === "ICE_PLATFORM",
-        
-        // Ảnh Full Set chứa trọn gói: Chibi + Súng + Báo + Bệ băng
-        poseImage: "./assets/phuong/pose/shouyue_full_set_pose.png"
-    }
-};
-
-// Hàm hiển thị bóng thoại thông báo cho Chibi
-function showChibiBubbleNotice(text) {
-    let chibiBubble = document.getElementById("chibi-bubble");
-    let chibiText = document.getElementById("chibi-text");
-    
-    if (chibiText) chibiText.innerText = text;
-    if (chibiBubble) {
-        chibiBubble.classList.remove("hidden");
-        setTimeout(() => chibiBubble.classList.add("hidden"), 3000);
-    }
-}
-
-/* 4. HÀM TỰ ĐỘNG XỬ LÝ RENDER VÀ POSE OVERRIDE */
-export function renderChibiOutfit(newOutfitState, characterId = 'phuong') {
-    if (newOutfitState) {
-        // Kiểm tra logic Key Item trước khi cho phép thay đổi state
-        for (const slot in newOutfitState) {
-            const itemId = newOutfitState[slot];
-            if (ITEM_RULES[itemId]) {
-                const rule = ITEM_RULES[itemId];
-                // Kiểm tra xem đã thỏa mãn các món yêu cầu chưa
-                const isSatisfied = rule.requires.every(reqItem => {
-                    return Object.values(currentOutfit).includes(reqItem);
-                });
-
-                if (!isSatisfied) {
-                    showChibiBubbleNotice(rule.lockNotice);
-                    return; // Chặn không cho mặc món này!
-                }
-            }
-        }
-
-        // Nếu hợp lệ, tiến hành cập nhật đồ
-        currentOutfit = { ...currentOutfit, ...newOutfitState };
-    }
-
-    const container = document.getElementById(`chibi-${characterId}-builder`);
-    if (!container) return;
-
-    // Kiểm tra xem có kích hoạt Full Set nào không (VD: Nằm ngắm bắn)
-    let activeFullPoseImg = null;
-    for (const setId in FULL_SETS) {
-        if (FULL_SETS[setId].condition(currentOutfit)) {
-            activeFullPoseImg = FULL_SETS[setId].poseImage;
-            break;
-        }
-    }
-
-    // Xử lý hiển thị Full Set Pose nếu đủ bộ
-    let fullSetLayer = document.getElementById(`${characterId}-full-pose`);
-    if (!fullSetLayer) {
-        // Nếu trong HTML chưa có thẻ chứa full pose thì tự tạo động đè lên trên cùng
-        fullSetLayer = document.createElement("img");
-        fullSetLayer.id = `${characterId}-full-pose`;
-        fullSetLayer.className = "chibi-layer z-fullset";
-        container.appendChild(fullSetLayer);
-    }
-
-    if (activeFullPoseImg) {
-        // 💥 ĐỦ BỘ FULL SET -> Ẩn hết các layer rời, bật ảnh pose đặc biệt lên
-        fullSetLayer.src = activeFullPoseImg;
-        fullSetLayer.classList.remove("hidden");
-
-        const allLayers = container.querySelectorAll(".chibi-layer:not([id$='-full-pose'])");
-        allLayers.forEach(el => el.classList.add("hidden"));
-        return; // Dừng luôn không cần render layer lẻ nữa
-    } else {
-        // 🔄 CHƯA ĐỦ BỘ -> Ẩn ảnh full set đi, render theo layer lẻ bình thường
-        fullSetLayer.classList.add("hidden");
-    }
-
-    // Ánh xạ DOM các bộ phận lẻ
-    const elements = {
-        head: document.getElementById(`${characterId}-hair`),
-        top: document.getElementById(`${characterId}-top`),
-        bottom: document.getElementById(`${characterId}-bottom`),
-        shoes: document.getElementById(`${characterId}-shoes`),
-        acc: document.getElementById(`${characterId}-acc`),
-        head: document.getElementById(`${characterId}-head`),
-        leftArm: document.getElementById(`${characterId}-left-arm`),
-        rightArm: document.getElementById(`${characterId}-right-arm`),
-        leftLeg: document.getElementById(`${characterId}-left-leg`),
-        rightLeg: document.getElementById(`${characterId}-right-leg`),
-        tail: document.getElementById(`${characterId}-tail`),
-        pets: document.getElementById(`${characterId}-pets`),
-        habitat: document.getElementById(`${characterId}-habitat`)
-    };
-
-    // Gán src cho từng bộ phận
-    Object.keys(elements).forEach(key => {
-        const el = elements[key];
-        if (el && CLOSET_ITEMS[key] && CLOSET_ITEMS[key][currentOutfit[key]] !== undefined) {
-            el.src = CLOSET_ITEMS[key][currentOutfit[key]];
-        }
-    });
-
-    // Tự động ẩn/hiện Base Body
-    const baseBodyImg = document.getElementById(`${characterId}-base`);
-    const isWearingCustom = Object.entries(currentOutfit).some(([slot, val]) => {
-        if (slot === 'acc' && val === 'NONE') return false;
-        return val !== "DEFAULT";
-    });
-
-    const componentLayers = container.querySelectorAll(`.chibi-layer:not([id$="-base"]):not([id$="-full-pose"])`);
-
-    if (isWearingCustom) {
-        if (baseBodyImg) baseBodyImg.classList.add("hidden");
-        componentLayers.forEach(layer => layer.classList.remove("hidden"));
-    } else {
-        if (baseBodyImg) baseBodyImg.classList.remove("hidden");
-        componentLayers.forEach(layer => layer.classList.add("hidden"));
-    }
-}
-
-/* 5. HÀM ĐỒNG BỘ TỪ FIREBASE */
-export function syncChibiFromFirebase(dataFromFirebase) {
-    if (dataFromFirebase && dataFromFirebase.outfit) {
-        renderChibiOutfit(dataFromFirebase.outfit, 'phuong');
-    }
-}
