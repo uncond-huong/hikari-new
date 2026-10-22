@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIKARI-Space</title>
+
+    <!-- 1. Kết nối Font chữ Be Vietnam Pro từ Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 2. Kết nối tệp CSS -->
+    <link rel="stylesheet" href="main.css">
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FF9EAA">
+</head>
+<body class="login-locked">
+
+  <!-- MÀN HÌNH ĐĂNG NHẬP PHỦ TOÀN TRANG -->
+  <div id="login-overlay" class="login-overlay">
+    <div class="login-card">
+      <h2 class="login-title">🌸 HIKARI Space 🌸</h2>
+      <p class="login-subtitle">Vui lòng đăng nhập bằng tài khoản được cấp</p>
+
+      <input type="email" id="login-email" class="login-input" placeholder="Email / Tên tài khoản">
+      <input type="password" id="login-pass" class="login-input" placeholder="Mật khẩu">
+
+      <button type="button" id="btn-login-submit" class="btn-login">Đăng nhập</button>
+
+      <p id="login-error-msg" class="login-error-msg"></p>
+    </div>
+  </div>
+
+  <div class="app-container">
+    <header class="top-header">
+      <div class="header-left">
+        <button class="menu-icon-btn" id="open-sidebar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2.2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div class="greeting-box">
+          <h1 class="greeting-title">Xin chào, <span id="user-name"></span></h1>
+          <p class="greeting-subtitle">Nơi ấm áp dành cho bạn 🌸</p>
+        </div>
+      </div>
+          
+          <!-- Avatar & Cảm xúc -->
+          <div class="user-profile-bar">
+            <div class="avatar-wrapper" id="my-avatar-wrapper">
+              <img src="https://ui-avatars.com/api/?name=Ouji&background=FF9EAA&color=fff" alt="Avatar của tôi" class="user-avatar-img" id="my-avatar-img">
+            </div>
+            <!-- Input chọn ảnh Avatar ẩn -->
+            <input type="file" id="avatar-file-input" accept="image/*" class="hidden-input">
+          </div>
+      </div>
+    </header>
+
+    <main class="main-container">
+
+      <!-- 1. KHỐI ĐỒNG HỒ KÉP (VN & JP) -->
+      <section class="clock-container">
+        <!-- Đồng hồ Việt Nam -->
+        <div class="clock-card vn-card">
+          <div class="floral-bg floral-sen">🪷</div>
+          
+          <div class="card-header">
+            <span class="header-icon">🪷</span>
+            <div class="header-text">
+              <div class="country-name">Việt Nam</div>
+              <div class="flower-name">Hoa Sen</div>
+            </div>
+          </div>
+
+          <div class="clock-circle" id="clock-face-vn">
+            <div class="clock-pattern sen-pattern"></div>
+            
+            <div class="hand hour-hand" id="vn-hour"></div>
+            <div class="hand minute-hand" id="vn-minute"></div>
+            <div class="hand second-hand vn-second-color" id="vn-second"></div>
+            <div class="clock-center-dot"></div>
+          </div>
+
+          <div class="digital-time vn-text-color" id="vn-digital">00:00:00</div>
+          <div class="date-text" id="vn-date">Thứ...,--/--/--</div>
+          <div class="utc-badge vn-badge">UTC+7</div>
+        </div>
+
+        <!-- Đồng hồ Nhật Bản -->
+        <div class="clock-card jp-card">
+          <div class="floral-bg floral-sakura">🌸</div>
+          
+          <div class="card-header">
+            <span class="header-icon">🌸</span>
+            <div class="header-text">
+              <div class="country-name">Nhật Bản</div>
+              <div class="flower-name">Hoa Anh Đào</div>
+            </div>
+          </div>
+
+          <div class="clock-circle" id="clock-face-jp">
+            <div class="clock-pattern sakura-pattern"></div>
+
+            <div class="hand hour-hand" id="jp-hour"></div>
+            <div class="hand minute-hand" id="jp-minute"></div>
+            <div class="hand second-hand jp-second-color" id="jp-second"></div>
+            <div class="clock-center-dot"></div>
+          </div>
+
+          <div class="digital-time jp-text-color" id="jp-digital">00:00:00</div>
+          <div class="date-text" id="jp-date">Thứ...,--/--/--</div>
+          <div class="utc-badge jp-badge">UTC+9</div>
+        </div>
+      </section>
+
+      <!-- 2. KHỐI THỜI TIẾT -->
+      <section class="weather-card" id="weather-widget">
+        <div class="weather-header">
+          <span id="weather-title">🌤️ Thời tiết hôm nay</span>
+          <button type="button" class="weatherlocation" id="select-city">
+            <span id="weather-city-name">Ishikawa</span>
+          </button>
+        </div>
+        <div class="weather-body">
+          <div class="weather-temp" id="weather-temp">26°C</div>
+          <div class="weather-desc" id="weather-desc">Nhiều mây</div>
+        </div>
+      </section>
+
+      <!-- 3. KHỐI CHIBI COMPANION & THANH EXP-->
+      <section class="chibi-home-card">
+  
+      <!-- 1. Khung Banner chứa Ảnh nền sân vườn, Chibi & Lời nhắn -->
+        <div class="chibi-banner-bg">
+        <!-- Chibi nằm/ngồi ấm áp bên trái -->
+          <div class="chibi-avatar-side">
+            <img id="phuong-base" class="chibi-layer z-base" src="./assets/phuong/base_body.png" alt="Phôi Phương" />
+          <img id="phuong-bottom" class="chibi-layer z-bottom" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Quần" />
+          <img id="phuong-top" class="chibi-layer z-top" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Áo" />
+          <img id="phuong-head" class="chibi-layer z-head" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Đầu" />
+          <img id="phuong-acc" class="chibi-layer z-acc" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Phụ kiện" />
+          <img id="phuong-pets" class="chibi-layer z-pets" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Pets" />
+          <img id="phuong-habitat" class="chibi-layer z-habitat" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Môi trường" />
+          </div>
+
+          <!-- Bong bóng thoại chữ nhật bo tròn bên phải -->
+          <div class="chibi-speech-box">
+            <p id="chibi-home-text">
+              Hôm nay Hường có vẻ vui hơn hôm qua nét! Cố lên nhé cậu mèo! ❤️
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Thanh tiến độ Level & EXP phía dưới -->
+        <div class="chibi-level-bar">
+          <div class="level-tag-group">
+            <span class="heart-icon">💛</span>
+            <span class="level-badge" id="chibi-level-tag">Lv.3</span>
+          </div>
+    
+          <div class="exp-track">
+           <div class="exp-fill" id="chibi-exp-fill" style="width: 68%;"></div>
+          </div>
+    
+          <span class="exp-text" id="chibi-exp-text">68%</span>
+    
+          <button type="button" class="chibi-interact-btn" id="btn-chibi-interact" title="Tương tác">
+            <span class="btn-icon">🪄</span>
+          </button>
+       </div>
+
+      </section>
+
+      <!-- 5. THẺ THANH TIẾN ĐỘ -->
+      <section class="progress-card">
+        <div class="progress-header">
+          <span>🌸 Hành trình 3 năm của Hime</span>
+          <span id="progress-text">0.00%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- THANH BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <button type="button" class="nav-item active" data-target="home-section">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Trang chủ</span>
+      </button>
+      <button type="button" class="nav-item" data-target="chibi-section">
+        <span class="nav-icon">🫠</span>
+        <span class="nav-label">Chibi</span>
+      </button>
+      <button type="button" class="nav-item" data-target="memory-section">
+        <span class="nav-icon">📖</span>
+        <span class="nav-label">Nhật ký</span>
+      </button>
+      <button type="button" class="nav-item" data-target="profile-section">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Cá nhân hóa</span>
+      </button>
+    </nav>
+
+    <!-- POPUP ĐỔI MẬT KHẨU -->
+    <div id="change-pass-modal" class="status-modal-overlay">
+      <div class="status-modal-content modal-sm">
+        <h4>Đổi mật khẩu mới</h4>
+        <p class="modal-subtext">Đổi mật khẩu riêng để bảo mật tài khoản 100%</p>
+        
+        <input type="password" id="input-old-pass" placeholder="Mật khẩu hiện tại" class="modal-text-input">
+        <input type="password" id="input-new-pass" placeholder="Mật khẩu mới (ít nhất 6 ký tự)" class="modal-text-input">
+        <input type="password" id="input-confirm-pass" placeholder="Nhập lại mật khẩu mới" class="modal-text-input mb-12">
+        
+        <p id="change-pass-msg" class="modal-msg"></p>
+
+        <div class="status-modal-actions">
+          <button id="btn-close-pass-modal" class="btn-cancel">Hủy</button>
+          <button id="btn-save-new-pass" class="btn-save">Lưu mật khẩu</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 2. Popup Cuộn Thư / Nghi Thức Bí Mật (Kích hoạt Chibi) -->
+    <div id="chibi-letter-modal" class="status-modal-overlay">
+    <!-- JS sẽ tự động bơm đúng giao diện vào đây -->
+      <div class="status-modal-content letter-modal-box" id="chibi-letter-content"></div>
+    </div>
+
+  <!-- 3. Kết nối tệp JavaScript -->
+  <script type="module" src="config.js"></script>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
