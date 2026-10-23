@@ -17,8 +17,7 @@
   min-height: 125px;
   border-radius: 16px;
   /* Ảnh nền sân vườn hoa lá nhã nhặn (Fallback dùng Gradient Pastel) */
-  background: linear-gradient(135deg, #E2F0D9 0%, #FFF5E4 50%, #FFE5EC 100%),
-              url('./assets/bg_garden_soft.png') center/cover no-repeat;
+  background: url('/assets/bg_garden_soft.png') center/cover no-repeat;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -29,18 +28,18 @@
 
 /* Nhân vật Chibi bên trái */
 .chibi-avatar-side {
-  width: 110px;
-  height: 95px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: flex-end;
-  z-index: 2;
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  max-height: 100px;
+  width: auto;
+  z-index: 6;
 }
 
 .chibi-banner-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  max-width: 300px;
+  height: auto;
+  align-self: flex-end;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
 }
 

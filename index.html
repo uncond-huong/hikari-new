@@ -49,16 +49,15 @@
         </div>
       </div>
           
-          <!-- Avatar & Cảm xúc -->
-          <div class="user-profile-bar">
-            <div class="avatar-wrapper" id="my-avatar-wrapper">
-              <img src="https://ui-avatars.com/api/?name=Ouji&background=FF9EAA&color=fff" alt="Avatar của tôi" class="user-avatar-img" id="my-avatar-img">
-            </div>
-            <!-- Input chọn ảnh Avatar ẩn -->
-            <input type="file" id="avatar-file-input" accept="image/*" class="hidden-input">
-          </div>
+      <!-- Avatar & Cảm xúc -->
+      <div class="user-profile-bar">
+        <div class="avatar-wrapper" id="my-avatar-wrapper">
+          <img src="https://ui-avatars.com/api/?name=Ouji&background=FF9EAA&color=fff" alt="Avatar của tôi" class="user-avatar-img" id="my-avatar-img">
+        </div>
+        <!-- Input chọn ảnh Avatar ẩn -->
+        <input type="file" id="avatar-file-input" accept="image/*" class="hidden-input">
       </div>
-    </header>
+    </header> <!-- Đã xóa thẻ </div> thừa ở đây -->
 
     <main class="main-container">
 
@@ -134,39 +133,31 @@
       <!-- 3. KHỐI CHIBI COMPANION & THANH EXP-->
       <section class="chibi-home-card">
   
-      <!-- 1. Khung Banner chứa Ảnh nền sân vườn, Chibi & Lời nhắn -->
-        <div class="chibi-banner-bg">
-        <!-- Chibi nằm/ngồi ấm áp bên trái -->
+        <!-- Khung Banner chứa Ảnh nền sân vườn, Chibi & Lời nhắn -->
+        <div class="chibi-banner-bg" id="chibi-touch-area">
+          <!-- Chibi nằm/ngồi ấm áp bên trái -->
           <div class="chibi-avatar-side">
-            <img id="phuong-base" class="chibi-layer z-base" src="./assets/phuong/base_body.png" alt="Phôi Phương" />
-          <img id="phuong-bottom" class="chibi-layer z-bottom" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Quần" />
-          <img id="phuong-top" class="chibi-layer z-top" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Áo" />
-          <img id="phuong-head" class="chibi-layer z-head" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Đầu" />
-          <img id="phuong-acc" class="chibi-layer z-acc" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Phụ kiện" />
-          <img id="phuong-pets" class="chibi-layer z-pets" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Pets" />
-          <img id="phuong-habitat" class="chibi-layer z-habitat" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Môi trường" />
+            <img id="chibiImg" class="phuong" src="" alt="Chibi Companion" />
           </div>
 
           <!-- Bong bóng thoại chữ nhật bo tròn bên phải -->
-          <div class="chibi-speech-box">
-            <p id="chibi-home-text">
-              Hôm nay Hường có vẻ vui hơn hôm qua nét! Cố lên nhé cậu mèo! ❤️
-            </p>
+          <div class="chibi-speech-box" id="speech-box">
+            <p id="dialog">Đang kết nối cùng cậu...</p>
           </div>
         </div>
 
-        <!-- 2. Thanh tiến độ Level & EXP phía dưới -->
+        <!-- Thanh tiến độ Level & EXP phía dưới -->
         <div class="chibi-level-bar">
           <div class="level-tag-group">
             <span class="heart-icon">💛</span>
-            <span class="level-badge" id="chibi-level-tag">Lv.3</span>
+            <span class="level-badge" id="chibi-level-tag">Lv.1</span>
           </div>
     
           <div class="exp-track">
-           <div class="exp-fill" id="chibi-exp-fill" style="width: 68%;"></div>
+           <div class="exp-fill" id="chibi-exp-fill" style="width: 0%;"></div>
           </div>
     
-          <span class="exp-text" id="chibi-exp-text">68%</span>
+          <span class="exp-text" id="chibi-exp-text">0%</span>
     
           <button type="button" class="chibi-interact-btn" id="btn-chibi-interact" title="Tương tác">
             <span class="btn-icon">🪄</span>
@@ -208,31 +199,27 @@
       </button>
     </nav>
 
-    <!-- POPUP ĐỔI MẬT KHẨU -->
-    <div id="change-pass-modal" class="status-modal-overlay">
-      <div class="status-modal-content modal-sm">
-        <h4>Đổi mật khẩu mới</h4>
-        <p class="modal-subtext">Đổi mật khẩu riêng để bảo mật tài khoản 100%</p>
-        
-        <input type="password" id="input-old-pass" placeholder="Mật khẩu hiện tại" class="modal-text-input">
-        <input type="password" id="input-new-pass" placeholder="Mật khẩu mới (ít nhất 6 ký tự)" class="modal-text-input">
-        <input type="password" id="input-confirm-pass" placeholder="Nhập lại mật khẩu mới" class="modal-text-input mb-12">
-        
-        <p id="change-pass-msg" class="modal-msg"></p>
+  </div> <!-- /app-container -->
 
-        <div class="status-modal-actions">
-          <button id="btn-close-pass-modal" class="btn-cancel">Hủy</button>
-          <button id="btn-save-new-pass" class="btn-save">Lưu mật khẩu</button>
-        </div>
+  <!-- POPUP ĐỔI MẬT KHẨU -->
+  <div id="change-pass-modal" class="status-modal-overlay">
+    <div class="status-modal-content modal-sm">
+      <h4>Đổi mật khẩu mới</h4>
+      <p class="modal-subtext">Đổi mật khẩu riêng để bảo mật tài khoản 100%</p>
+      
+      <input type="password" id="input-old-pass" placeholder="Mật khẩu hiện tại" class="modal-text-input">
+      <input type="password" id="input-new-pass" placeholder="Mật khẩu mới (ít nhất 6 ký tự)" class="modal-text-input">
+      <input type="password" id="input-confirm-pass" placeholder="Nhập lại mật khẩu mới" class="modal-text-input mb-12">
+      
+      <p id="change-pass-msg" class="modal-msg"></p>
+
+      <div class="status-modal-actions">
+        <button id="btn-close-pass-modal" class="btn-cancel">Hủy</button>
+        <button id="btn-save-new-pass" class="btn-save">Lưu mật khẩu</button>
       </div>
     </div>
+  </div>
     
-    <!-- 2. Popup Cuộn Thư / Nghi Thức Bí Mật (Kích hoạt Chibi) -->
-    <div id="chibi-letter-modal" class="status-modal-overlay">
-    <!-- JS sẽ tự động bơm đúng giao diện vào đây -->
-      <div class="status-modal-content letter-modal-box" id="chibi-letter-content"></div>
-    </div>
-
   <!-- 3. Kết nối tệp JavaScript -->
   <script type="module" src="config.js"></script>
   <script type="module" src="script.js"></script>
