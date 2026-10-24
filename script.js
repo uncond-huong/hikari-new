@@ -15,7 +15,7 @@ import { uploadToCloudinary } from './components/utils/cloudinary.js';
 
 // 3. Import Companion & Outfit Modules
 import { renderChibiOutfit, equipItem } from './components/companion/wardrobe.js';
-import { getRandomDialog } from './components/clone_chibi/chibi-builder.js';
+import { getRandomDialog, initChibi } from './components/clone_chibi/chibi-builder.js';
 import { askGeminiChibi } from './components/companion/events.js';
 
 // 4. Khởi tạo Đồng hồ Kép (Việt Nam & Nhật Bản)
@@ -135,6 +135,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // D. Khởi tạo tương tác Chibi (Click gacha thoại & đổi pose)
     setupChibiEvents();
+    initChibi();
+
+    askGeminiChibi();
 
     // E. Đăng ký PWA Service Worker
     if ('serviceWorker' in navigator) {
